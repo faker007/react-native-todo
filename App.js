@@ -8,30 +8,15 @@ import {
   ScrollView,
 } from "react-native";
 
+import TodoAdd from "./src/components/TodoAdd";
+
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Hello, my todo</Text>
       <View style={styles.card}>
-        <TextInput style={styles.input} placeholder="Add an item!" />
+        <TodoAdd />
         <ScrollView>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
-          <Text>Todolist</Text>
           <Text>Todolist</Text>
         </ScrollView>
       </View>
