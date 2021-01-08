@@ -1,19 +1,69 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+} from "react-native";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello, world! I'm going to make a todo app</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Hello, my todo</Text>
+      <View style={styles.card}>
+        <TextInput style={styles.input} placeholder="Add an item!" />
+        <ScrollView>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+          <Text>Todolist</Text>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#3143e8",
+  },
+  title: {
+    color: "black",
+    fontSize: 36,
+    marginTop: 30,
+    marginBottom: 30,
+    fontWeight: "300",
+    textAlign: "center",
+  },
+  card: {
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  input: {
+    padding: 20,
+    borderBottomColor: 1,
+    fontSize: 24,
+    marginLeft: 24,
   },
 });
