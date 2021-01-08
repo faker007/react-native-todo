@@ -24,12 +24,16 @@ export default function App() {
     ]);
   };
 
+  const onRemove = (id) => (e) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Hello, my todo</Text>
       <View style={styles.card}>
         <TodoAdd onAddTodo={addTodo} />
-        <TodoList todos={todos} />
+        <TodoList todos={todos} onRemove={onRemove} />
       </View>
     </SafeAreaView>
   );

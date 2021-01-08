@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 
-const TodoListItem = ({ id, text, checked }) => {
+const TodoListItem = ({ id, text, checked, onRemove }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
@@ -13,7 +13,7 @@ const TodoListItem = ({ id, text, checked }) => {
       </TouchableOpacity>
       <Text style={[styles.text, styles.strikeText]}>{text}</Text>
       <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>
+        <Text style={styles.buttonText} onPress={onRemove(id)}>
           <AntDesign name="delete" size={30} color="#e33057" />
         </Text>
       </TouchableOpacity>
