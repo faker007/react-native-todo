@@ -3,15 +3,26 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 
-const TodoListItem = ({ id, text, checked, onRemove }) => {
+const TodoListItem = ({ id, text, checked, onRemove, onToggle, press }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <View style={styles.completeCircle}>
-          <AntDesign name="circledowno" size={30} color="#3143e8" />
-        </View>
+        <TouchableOpacity onPressOut={onToggle(id)}>
+          {checked ? (
+            <View style={styles.completeCircle}>
+              <AntDesign name="circledowno" size={30} color="#3143e8" />
+            </View>
+          ) : (
+            <View style={styles.circle} />
+          )}
+        </TouchableOpacity>
       </TouchableOpacity>
-      <Text style={[styles.text, styles.strikeText]}>{text}</Text>
+      <Text
+        style={[styles.text, checked ? styles.strikeText : styles.unstrikeText]}
+        onLongPress={press}
+      >
+        {text}
+      </Text>
       <TouchableOpacity style={styles.buttonContainer}>
         <Text style={styles.buttonText} onPress={onRemove(id)}>
           <AntDesign name="delete" size={30} color="#e33057" />
@@ -29,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    zIndex: 1,
   },
   text: {
     flex: 5,

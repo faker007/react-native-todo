@@ -28,12 +28,25 @@ export default function App() {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
+  const onToggle = (id) => (e) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, checked: !todo.checked } : todo
+      )
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Hello, my todo</Text>
       <View style={styles.card}>
         <TodoAdd onAddTodo={addTodo} />
-        <TodoList todos={todos} onRemove={onRemove} />
+        <TodoList
+          todos={todos}
+          onRemove={onRemove}
+          onToggle={onToggle}
+          setTodos={setTodos}
+        />
       </View>
     </SafeAreaView>
   );
@@ -45,7 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3143e8",
   },
   title: {
-    color: "black",
+    color: "white",
     fontSize: 36,
     marginTop: 30,
     marginBottom: 30,
