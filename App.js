@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import TodoAdd from "./src/components/TodoAdd";
+import TodoList from "./src/components/TodoList";
 
 export default function App() {
   return (
@@ -16,9 +17,7 @@ export default function App() {
       <Text style={styles.title}>Hello, my todo</Text>
       <View style={styles.card}>
         <TodoAdd />
-        <ScrollView>
-          <Text>Todolist</Text>
-        </ScrollView>
+        <TodoList />
       </View>
     </SafeAreaView>
   );
