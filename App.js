@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,12 +12,24 @@ import TodoAdd from "./src/components/TodoAdd";
 import TodoList from "./src/components/TodoList";
 
 export default function App() {
+  const [todos, setTodos] = useState([]);
+  const addTodo = (text) => {
+    setTodos([
+      ...todos,
+      {
+        id: Math.random().toString(),
+        text,
+        checked: false,
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Hello, my todo</Text>
       <View style={styles.card}>
-        <TodoAdd />
-        <TodoList />
+        <TodoAdd onAddTodo={addTodo} />
+        <TodoList todos={todos} />
       </View>
     </SafeAreaView>
   );
