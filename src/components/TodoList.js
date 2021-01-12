@@ -4,7 +4,7 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 import TodoListItem from "./TodoListItem";
 
-const TodoList = ({ todos, onRemove, onToggle, setTodos }) => {
+const TodoList = ({ todos, onRemove, onToggle, setTodos, onChange }) => {
   const renderItem = ({ item, index, drag, isActive }) => {
     return (
       <TodoListItem
@@ -12,6 +12,7 @@ const TodoList = ({ todos, onRemove, onToggle, setTodos }) => {
         onToggle={onToggle}
         onRemove={onRemove}
         press={drag}
+        onChange={onChange}
       />
     );
   };

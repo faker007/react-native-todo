@@ -35,14 +35,16 @@ export default function App() {
   };
 
   const addTodo = (text) => {
-    setTodos([
-      ...todos,
-      {
-        id: Math.random().toString(),
-        text,
-        checked: false,
-      },
-    ]);
+    if (text !== "" && text !== undefined && text !== null) {
+      setTodos([
+        ...todos,
+        {
+          id: Math.random().toString(),
+          text,
+          checked: false,
+        },
+      ]);
+    }
   };
 
   const onRemove = (id) => (e) => {
@@ -57,13 +59,21 @@ export default function App() {
     );
   };
 
+  const onChange = (id, text) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, text: text } : todo))
+    );
+  };
+
   useEffect(() => {
+    // todos가 변경될 때 마다, localStorage에 저장
     if (todos.length > 0) {
       storeData(todos);
     }
   }, [todos]);
 
   useEffect(() => {
+    // 초기에 App.js가 초기화될 때, localStorage에서 데이터 가져 옴.
     async function fetchData() {
       const initialValue = await getData();
       if (initialValue !== null) {
@@ -83,6 +93,7 @@ export default function App() {
           onRemove={onRemove}
           onToggle={onToggle}
           setTodos={setTodos}
+          onChange={onChange}
         />
       </View>
     </SafeAreaView>

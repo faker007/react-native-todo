@@ -1,11 +1,65 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  EdgeInsetsPropType,
+} from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 
-const TodoListItem = ({ id, text, checked, onRemove, onToggle, press }) => {
+import Modal from "react-native-modal";
+import { TextInput } from "react-native-gesture-handler";
+
+const TodoListItem = ({
+  id,
+  text,
+  checked,
+  onRemove,
+  onToggle,
+  press,
+  onChange,
+}) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [editText, setEditText] = useState("");
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const handleChange = (newText) => {
+    setEditText(newText);
+  };
+
+  const handleChangeSubmit = () => {
+    // Side note : 상태 관리를 조금 더 용이하게 하려면, Redux 사용?
+    // 예측되는 문제점 : 만약에 id가 같다면..? => ...
+    // 1. filter나 map으로, todos을 수정 한 다음에
+    // 2. App.js에 반영 (props drilling)
+    onChange(id, editText);
+    toggleModal();
+    setEditText("");
+  };
+
   return (
     <View style={styles.container}>
+      {/* Edit text modal */}
+      <Modal isVisible={isModalVisible}>
+        <SafeAreaView style={styles.modal}>
+          <TextInput
+            value={editText}
+            autoCorrect={false}
+            onChangeText={handleChange}
+            placeholder="edit here"
+          />
+          <View style={styles.modalButtonContainer}>
+            <Button title="취소" onPress={toggleModal} />
+            <Button title="수정" onPress={handleChangeSubmit} />
+          </View>
+        </SafeAreaView>
+      </Modal>
       <TouchableOpacity>
         <TouchableOpacity onPressOut={onToggle(id)}>
           {checked ? (
@@ -26,6 +80,11 @@ const TodoListItem = ({ id, text, checked, onRemove, onToggle, press }) => {
       <TouchableOpacity style={styles.buttonContainer}>
         <Text style={styles.buttonText} onPress={onRemove(id)}>
           <AntDesign name="delete" size={30} color="#e33057" />
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonContainer}>
+        <Text style={styles.buttonText} onPress={toggleModal}>
+          <AntDesign name="edit" size={30} color="#e33057" />
         </Text>
       </TouchableOpacity>
     </View>
@@ -70,8 +129,18 @@ const styles = StyleSheet.create({
     color: "#29323c",
   },
   buttonContainer: {
-    marginVertical: 10,
-    marginHorizontal: 10,
+    marginVertical: 5,
+    marginHorizontal: 5,
+    flexDirection: "row",
+  },
+  modal: {
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
   },
 });
 
