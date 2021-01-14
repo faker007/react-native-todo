@@ -42,7 +42,6 @@ export default function App() {
     }
   }
 
-  const [todos, setTodos] = useState([]);
   const [state, dispatch] = useReducer(reducer, []);
 
   const getData = async () => {
@@ -85,6 +84,10 @@ export default function App() {
     dispatch({ type: "EDIT_TODO", id, text });
   };
 
+  const onDragEnd = (payload) => {
+    dispatch({ type: "GET_PAYLOAD", payload });
+  };
+
   useEffect(() => {
     // state(todos)가 변경될 때 마다, localStorage에 저장
     if (state.length > 0) {
@@ -110,7 +113,7 @@ export default function App() {
           onToggle={onToggle}
           onRemove={onRemove}
           onEdit={onEdit}
-          setTodos={setTodos}
+          onDragEnd={onDragEnd}
         />
       </View>
     </SafeAreaView>
