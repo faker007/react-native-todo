@@ -21,7 +21,7 @@ const TodoListItem = ({
   onRemove,
   onToggle,
   press,
-  onChange,
+  onEdit,
 }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [editText, setEditText] = useState("");
@@ -38,7 +38,7 @@ const TodoListItem = ({
     // 예측되는 문제점 : 만약에 id가 같다면..? => ...
     // 1. filter나 map으로, todos을 수정 한 다음에
     // 2. App.js에 반영 (props drilling)
-    onChange(id, editText);
+    onEdit(id, editText);
     toggleModal();
     setEditText("");
   };

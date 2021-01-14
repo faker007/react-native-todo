@@ -4,7 +4,7 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 import TodoListItem from "./TodoListItem";
 
-const TodoList = ({ todos, onRemove, onToggle, setTodos, onChange }) => {
+const TodoList = ({ todos, onToggle, onRemove, onEdit, setTodos }) => {
   const renderItem = ({ item, index, drag, isActive }) => {
     return (
       <TodoListItem
@@ -12,7 +12,7 @@ const TodoList = ({ todos, onRemove, onToggle, setTodos, onChange }) => {
         onToggle={onToggle}
         onRemove={onRemove}
         press={drag}
-        onChange={onChange}
+        onEdit={onEdit}
       />
     );
   };
@@ -26,16 +26,6 @@ const TodoList = ({ todos, onRemove, onToggle, setTodos, onChange }) => {
       />
     </View>
   );
-  // <ScrollView contentContainerStyle={styles.listContainer}>
-  //   {todos.map((todo) => (
-  //     <TodoListItem
-  //       key={todo.id}
-  //       {...todo}
-  //       onRemove={onRemove}
-  //       onToggle={onToggle}
-  //     />
-  //   ))}
-  // </ScrollView>
 };
 
 const styles = StyleSheet.create({

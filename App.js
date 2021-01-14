@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,13 +13,47 @@ import TodoAdd from "./src/components/TodoAdd";
 import TodoList from "./src/components/TodoList";
 
 export default function App() {
+  function reducer(state, action) {
+    switch (action.type) {
+      case "GET_PAYLOAD":
+        console.log(action.payload);
+        return action.payload;
+      case "ADD_TODO":
+        return [
+          ...state,
+          {
+            id: Math.random().toString(),
+            text: action.text,
+            checked: false,
+          },
+        ];
+      case "REMOVE_TODO":
+        return state.filter((todo) => todo.id !== action.id);
+      case "TOGGLE_TODO":
+        return state.map((todo) =>
+          todo.id === action.id ? { ...todo, checked: !todo.checked } : todo
+        );
+      case "EDIT_TODO":
+        return state.map((todo) =>
+          todo.id === action.id ? { ...todo, text: action.text } : todo
+        );
+      default:
+        return state;
+    }
+  }
+
   const [todos, setTodos] = useState([]);
+  const [state, dispatch] = useReducer(reducer, []);
 
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("todos");
-      return jsonValue !== null ? JSON.parse(jsonValue) : null;
-    } catch (e) {}
+      return jsonValue !== null
+        ? dispatch({ type: "GET_PAYLOAD", payload: JSON.parse(jsonValue) })
+        : null;
+    } catch (e) {
+      console.log("App.js:23:AsyncStorage에 문제가 있습니다. err : " + e);
+    }
   };
 
   const storeData = async (value) => {
@@ -28,57 +62,40 @@ export default function App() {
       await AsyncStorage.setItem("todos", stringify);
 
       const result = await AsyncStorage.getItem("todos");
-      console.log(result);
     } catch (e) {
-      console.log(e);
+      console.log("App.js:34:AsyncStorage에 문제가 있습니다. err : " + e);
     }
   };
 
   const addTodo = (text) => {
     if (text !== "" && text !== undefined && text !== null) {
-      setTodos([
-        ...todos,
-        {
-          id: Math.random().toString(),
-          text,
-          checked: false,
-        },
-      ]);
+      dispatch({ type: "ADD_TODO", text });
     }
   };
 
   const onRemove = (id) => (e) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    dispatch({ type: "REMOVE_TODO", id });
   };
 
   const onToggle = (id) => (e) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo
-      )
-    );
+    dispatch({ type: "TOGGLE_TODO", id });
   };
 
-  const onChange = (id, text) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, text: text } : todo))
-    );
+  const onEdit = (id, text) => {
+    dispatch({ type: "EDIT_TODO", id, text });
   };
 
   useEffect(() => {
-    // todos가 변경될 때 마다, localStorage에 저장
-    if (todos.length > 0) {
-      storeData(todos);
+    // state(todos)가 변경될 때 마다, localStorage에 저장
+    if (state.length > 0) {
+      storeData(state);
     }
-  }, [todos]);
+  }, [state]);
 
   useEffect(() => {
     // 초기에 App.js가 초기화될 때, localStorage에서 데이터 가져 옴.
     async function fetchData() {
-      const initialValue = await getData();
-      if (initialValue !== null) {
-        setTodos(initialValue);
-      }
+      await getData();
     }
     fetchData();
   }, []);
@@ -89,11 +106,11 @@ export default function App() {
       <View style={styles.card}>
         <TodoAdd onAddTodo={addTodo} />
         <TodoList
-          todos={todos}
-          onRemove={onRemove}
+          todos={state}
           onToggle={onToggle}
+          onRemove={onRemove}
+          onEdit={onEdit}
           setTodos={setTodos}
-          onChange={onChange}
         />
       </View>
     </SafeAreaView>
